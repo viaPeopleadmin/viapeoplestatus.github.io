@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance System Status</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f9f9f9; color: #333; line-height: 1.6; }
+        h1 { text-align: center; font-size: 2.5em; margin-bottom: 10px; }
+        .status-warning { color: orange; text-align: center; font-size: 1.5em; margin-bottom: 20px; }
+        .status-up { color: green; text-align: center; font-size: 1.5em; margin-bottom: 20px; }
+        .section { background-color: #fff; padding: 20px; margin: 20px auto; border-radius: 8px; max-width: 700px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h2 { color: #0052cc; }
+        ul { margin-left: 20px; }
+        .note { margin-top: 15px; font-style: italic; }
+    </style>
+</head>
+<body>
+    <h1>Performance System Status</h1>
+    <p class="status-warning">⚠️ We are currently experiencing system slowness</p>
+    <p class="note">Last updated: December 2, 2025</p>
+    <p class="note">Our technical team is actively investigating and working to improve performance. Thank you for your patience.</p>
+
+    <div class="section">
+        <h2>Employees</h2>
+        <ul>
+            <li>Use this time to reflect on the feedback you want to provide this cycle</li>
+            <li>Take detailed notes for your self-evaluation</li>
+            <li>Think about who you’d like to request as reviewers</li>
+            <li>Gather accomplishments, project summaries, and goal updates</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Managers</h2>
+        <ul>
+            <li>Review team priorities and progress against goals</li>
+            <li>Prepare coaching notes for meaningful feedback conversations</li>
+            <li>Update participation lists for your direct reports if needed</li>
+            <li>Consider examples of contributions to include in evaluations</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Client Administrators (CAs)</h2>
+        <ul>
+            <li>Monitor system performance and communicate updates to your team</li>
+            <li>Assist managers or employees who may have questions during slow performance</li>
+            <li>Prepare internal guidance or notes to streamline the evaluation process when performance improves</li>
+        </ul>
+    </div>
+
+    <p class="note" style="text-align:center;">We will update this page as soon as performance improves. Thank you for your understanding!</p>
+</body>
+</html>
+Add initial outage status page
