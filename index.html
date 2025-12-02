@@ -5,51 +5,148 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Performance System Status</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f9f9f9; color: #333; line-height: 1.6; }
-        h1 { text-align: center; font-size: 2.5em; margin-bottom: 10px; }
-        .status-warning { color: orange; text-align: center; font-size: 1.5em; margin-bottom: 20px; }
-        .status-up { color: green; text-align: center; font-size: 1.5em; margin-bottom: 20px; }
-        .section { background-color: #fff; padding: 20px; margin: 20px auto; border-radius: 8px; max-width: 700px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        h2 { color: #0052cc; }
-        ul { margin-left: 20px; }
-        .note { margin-top: 15px; font-style: italic; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            overflow: hidden;
+        }
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.5em;
+            color: #333;
+        }
+        .note {
+            margin-top: 15px;
+            font-style: italic;
+            font-size: 1.2em;
+        }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .status-up { color: #28a745; }
+        .status-warning { color: orange; }
     </style>
 </head>
 <body>
-    <h1>Performance System Status</h1>
-    <p class="status-warning">⚠️ We are currently experiencing system slowness</p>
-    <p class="note">Last updated: December 2, 2025</p>
-    <p class="note">Our technical team is actively investigating and working to improve performance. Thank you for your patience.</p>
+    <h1 id="status-heading"></h1>
+    <p id="status-message"></p>
+    <p class="note" id="last-updated"></p>
 
-    <div class="section">
-        <h2>Employees</h2>
-        <ul>
-            <li>Use this time to reflect on the feedback you want to provide this cycle</li>
-            <li>Take detailed notes for your self-evaluation</li>
-            <li>Think about who you’d like to request as reviewers</li>
-            <li>Gather accomplishments, project summaries, and goal updates</li>
-        </ul>
-    </div>
+    <canvas id="confetti"></canvas>
 
-    <div class="section">
-        <h2>Managers</h2>
-        <ul>
-            <li>Review team priorities and progress against goals</li>
-            <li>Prepare coaching notes for meaningful feedback conversations</li>
-            <li>Update participation lists for your direct reports if needed</li>
-            <li>Consider examples of contributions to include in evaluations</li>
-        </ul>
-    </div>
+    <script>
+        // ---------------------------
+        // CHANGE THIS VARIABLE TO TOGGLE STATUS
+        // "up" = all systems operational
+        // "slowness" = system is slow / outage
+        const systemStatus = "up"; 
+        // ---------------------------
 
-    <div class="section">
-        <h2>Client Administrators (CAs)</h2>
-        <ul>
-            <li>Monitor system performance and communicate updates to your team</li>
-            <li>Assist managers or employees who may have questions during slow performance</li>
-            <li>Prepare internal guidance or notes to streamline the evaluation process when performance improves</li>
-        </ul>
-    </div>
+        const heading = document.getElementById('status-heading');
+        const message = document.getElementById('status-message');
+        const lastUpdated = document.getElementById('last-updated');
+        const canvas = document.getElementById('confetti');
+        const ctx = canvas.getContext('2d');
 
-    <p class="note" style="text-align:center;">We will update this page as soon as performance improves. Thank you for your understanding!</p>
+        let W = window.innerWidth;
+        let H = window.innerHeight;
+        canvas.width = W;
+        canvas.height = H;
+
+        function showStatus() {
+            const now = new Date();
+            lastUpdated.textContent = `Last updated: ${now.toLocaleString()}`;
+
+            if (systemStatus === "up") {
+                heading.textContent = "🎉 All Systems Are Operational! 🎉";
+                heading.className = "status-up";
+                message.textContent = "Thank you for using our performance platform.";
+                startConfetti();
+            } else if (systemStatus === "slowness") {
+                heading.textContent = "⚠️ We are currently experiencing system slowness";
+                heading.className = "status-warning";
+                message.textContent = "Our technical team is actively investigating. Thank you for your patience.";
+            }
+        }
+
+        // ---------------------------
+        // Confetti effect for "up" status
+        // ---------------------------
+        const confettiCount = 150;
+        const confetti = [];
+
+        function random(min, max) { return Math.random() * (max - min) + min; }
+
+        class Confetto {
+            constructor() {
+                this.x = random(0, W);
+                this.y = random(-H, 0);
+                this.r = random(5, 10);
+                this.d = random(1, 5);
+                this.color = `hsl(${random(0, 360)}, 70%, 50%)`;
+                this.tilt = random(-10, 10);
+                this.tiltAngleIncrement = random(0.05, 0.12);
+                this.tiltAngle = 0;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.lineWidth = this.r / 2;
+                ctx.strokeStyle = this.color;
+                ctx.moveTo(this.x + this.tilt + this.r / 4, this.y);
+                ctx.lineTo(this.x + this.tilt, this.y + this.tilt + this.r / 4);
+                ctx.stroke();
+            }
+        }
+
+        function initConfetti() {
+            for (let i = 0; i < confettiCount; i++) {
+                confetti.push(new Confetto());
+            }
+        }
+
+        function drawConfetti() {
+            ctx.clearRect(0, 0, W, H);
+            confetti.forEach(c => {
+                c.tiltAngle += c.tiltAngleIncrement;
+                c.y += (Math.cos(c.d) + 3 + c.r / 2) / 2;
+                c.tilt = Math.sin(c.tiltAngle) * 15;
+                c.draw();
+
+                if (c.y > H) {
+                    c.x = random(0, W);
+                    c.y = random(-20, 0);
+                    c.tilt = random(-10, 10);
+                }
+            });
+            requestAnimationFrame(drawConfetti);
+        }
+
+        function startConfetti() {
+            initConfetti();
+            drawConfetti();
+        }
+
+        window.addEventListener('resize', () => {
+            W = window.innerWidth;
+            H = window.innerHeight;
+            canvas.width = W;
+            canvas.height = H;
+        });
+
+        showStatus();
+    </script>
 </body>
 </html>
